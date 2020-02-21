@@ -45,9 +45,11 @@ if ( empty( $response['access_token'] ) )
 // Path defaults to /openapi.
 $request_path = 'openapi';
 
-if ( ! empty( $_GET['path'] ) )
+$path = isset($_GET['path']) ? $_GET['path'] : $_POST['path']; 
+
+if ( ! empty( $path ) )
 {
-	$request_path = $_GET['path'];
+	$request_path = $path ;
 
 	// Can omit 'records/'.
 	if ( strpos( $request_path, 'records/' ) === false )
@@ -66,11 +68,18 @@ $api_url_path = $api_url . $request_path;
 // Send our access_token in the X-Authorization HTTP header.
 $curl->setHeader( 'X-Authorization: Bearer ' . $response['access_token'] );
 
-$response = $curl->get( $api_url_path );
+if (!empty($_POST)){	
+	$data = $_POST['data'];
+	$response = $curl->post( $api_url_path, $data );	
+}
+else {
+	$response = $curl->get( $api_url_path);
+}
+
 
 header( 'Content-Type: application/json' );
 
-echo $response;
+ echo $response;
 
 exit;
 
