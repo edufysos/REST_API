@@ -68,6 +68,7 @@ $api_url_path = $api_url . $request_path;
 // Send our access_token in the X-Authorization HTTP header.
 $curl->setHeader( 'X-Authorization: Bearer ' . $response['access_token'] );
 
+
 if (!empty($_POST)){	
 	$data = $_POST['data'];
 	$response = $curl->post( $api_url_path, $data );	
